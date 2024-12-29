@@ -1,99 +1,157 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Project Structure for NestJS Application
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This document outlines the structure of a comprehensive NestJS application with modular design, emphasizing scalability, reusability, and maintainability.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+---
 
-## Description
+## Table of Contents
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+1. [Introduction](#introduction)
+2. [Folder Structure](#folder-structure)
+3. [Core Features](#core-features)
+4. [Business Logic Modules](#business-logic-modules)
+5. [Infrastructure](#infrastructure)
+6. [Testing](#testing)
+7. [Versioning](#versioning)
+8. [Global Features](#global-features)
 
-## Project setup
+---
 
-```bash
-$ npm install
+## Introduction
+This project is designed using the **NestJS framework** to ensure a clean architecture. It includes modularized features, core utilities, infrastructure support, and a structured approach to business logic, testing, and versioning.
+
+---
+
+## Folder Structure
+
+```
+/src
+├── /core                     # Core modules used across the app
+│   ├── /auth                 # Authentication-related logic
+│   ├── /security             # Security utilities like guards and strategies
+│   ├── /validation           # Shared validation logic
+│   ├── /utils                # Shared utilities (logger, constants)
+├── /modules                  # Domain-specific modules
+│   ├── /users                # User management
+│   ├── /sports               # Sports management
+│   ├── /matches              # Matches-related features
+│   ├── /contests             # Contests-related logic
+│   ├── /transactions         # Transaction-related features
+│   ├── /leaderboards         # Leaderboard-related features
+│   ├── /notifications        # Notification management
+│   ├── /promotions           # Promotional campaigns
+│   ├── /support              # Support ticketing system
+│   ├── /reports              # Report generation
+│   ├── /analytics            # Analytics and insights
+├── /infrastructure            # Cross-cutting infrastructure modules
+│   ├── /database             # Database connection, migrations, seeders
+│   ├── /cache                # Caching mechanism
+│   ├── /jobs                 # Job scheduling and processing
+├── /tests                    # Unit and E2E tests
+│   ├── /unit                 # Unit tests
+│   └── /e2e                  # End-to-end tests
+├── /versioning               # API versioning structure
+└── app.module.ts             # Root module
 ```
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## Core Features
 
-# watch mode
-$ npm run start:dev
+### Authentication (`core/auth`):
+- **Controllers**: Manage auth-related endpoints (e.g., login, registration).
+- **Services**: Business logic for authentication.
+- **Guards**: Role-based and JWT authentication guards.
+- **DTOs**: Data transfer objects for user input validation.
 
-# production mode
-$ npm run start:prod
+### Security (`core/security`):
+- Guards and decorators for role-based access control (RBAC).
+- JWT strategy for token management.
+
+### Validation (`core/validation`):
+- Centralized DTO validators.
+- Custom validation pipes for request data.
+
+### Utilities (`core/utils`):
+- Logging middleware.
+- Constants and helper functions.
+
+---
+
+## Business Logic Modules
+
+### Domain Modules (`modules`):
+Each domain module contains:
+- **Controllers**: Define RESTful endpoints.
+- **Services**: Implement business logic.
+- **DTOs**: Define request/response structures.
+- **Entities**: Database schema representation.
+
+Example: `modules/users`
+```
+/modules/users
+├── controllers
+├── services
+├── modules
+├── dto
+├── entities
 ```
 
-## Run tests
+---
 
-```bash
-# unit tests
-$ npm run test
+## Infrastructure
 
-# e2e tests
-$ npm run test:e2e
+### Database:
+- Module for database configuration.
+- Providers for repository patterns.
+- Support for migrations and seeders.
 
-# test coverage
-$ npm run test:cov
-```
+### Cache:
+- Centralized caching mechanism using Redis.
+- Cache service for reusable functionality.
 
-## Deployment
+### Jobs:
+- Background jobs using Bull.
+- Email and notification job processors.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+---
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Testing
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+- **Unit Tests**: Validate individual components (e.g., services, controllers).
+- **End-to-End Tests**: Test the entire flow of the application.
+- Test files are structured under `tests/unit` and `tests/e2e`.
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## Versioning
 
-Check out a few resources that may come in handy when working with NestJS:
+- Supports multiple API versions (`v1`, `v2`).
+- Controllers are separated by version for backward compatibility.
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+## Global Features
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- **Swagger Documentation**: API documentation is available for all endpoints.
+- **Global Middleware**: Logging and authentication middleware.
+- **Exception Filters**: Centralized error handling.
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## How to Run
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Run the application:
+   ```bash
+   npm run start:dev
+   ```
+3. Swagger documentation is available at `/api/docs`.
+
+---
 
 ## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+This project is licensed under the MIT License.
