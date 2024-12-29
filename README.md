@@ -14,6 +14,10 @@ This document outlines the structure of a comprehensive NestJS application with 
 6. [Testing](#testing)
 7. [Versioning](#versioning)
 8. [Global Features](#global-features)
+9. [How to Run](#how-to-run)
+10. [How to Build](#how-to-build)
+11. [How to Test](#how-to-test)
+12. [License](#license)
 
 ---
 
@@ -145,11 +149,44 @@ Example: `modules/users`
    ```bash
    npm install
    ```
-2. Run the application:
+2. Run the application in development mode:
    ```bash
    npm run start:dev
    ```
-3. Swagger documentation is available at `/api/docs`.
+3. Access the Swagger documentation at:
+   ```
+   http://localhost:3000/api/docs
+   ```
+
+---
+
+## How to Build
+
+1. Build the application for production:
+   ```bash
+   npm run build
+   ```
+2. Start the production server:
+   ```bash
+   npm run start:prod
+   ```
+
+---
+
+## How to Test
+
+1. Run all unit tests:
+   ```bash
+   npm run test
+   ```
+2. Run all end-to-end tests:
+   ```bash
+   npm run test:e2e
+   ```
+3. View the test coverage report:
+   ```bash
+   npm run test:cov
+   ```
 
 ---
 
