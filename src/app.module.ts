@@ -46,7 +46,7 @@ import { JobsModule } from './infrastructure/jobs/jobs.module';
     AnalyticsModule,
     DatabaseModule,
     CacheModule,
-    JobsModule
+    JobsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

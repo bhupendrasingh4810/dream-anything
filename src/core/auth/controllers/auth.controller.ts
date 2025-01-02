@@ -1,10 +1,10 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { AuthService } from '../../services/auth/auth.service';
-import { RegisterDto } from '../../dto/register.dto';
-import { LoginDto } from '../../dto/login.dto';
-import { ForgotPasswordDto } from '../../dto/forgot-password.dto';
-import { ResetPasswordDto } from '../../dto/reset-password.dto';
-import { RefreshTokenDto } from '../../dto/refresh-token.dto';
+import { AuthService } from '../services/auth.service';
+import { CreateUserDto } from '../dto/register.dto';
+import { LoginDto } from '../dto/login.dto';
+import { ForgotPasswordDto } from '../dto/forgot-password.dto';
+import { ResetPasswordDto } from '../dto/reset-password.dto';
+import { RefreshTokenDto } from '../dto/refresh-token.dto';
 
 /**
  * Controller handling authentication-related routes.
@@ -18,8 +18,8 @@ export class AuthController {
      * Registers a new user.
      */
     @Post('register')
-    async register(@Body() registerDto: RegisterDto) {
-        return this.authService.register(registerDto);
+    async register(@Body() createUserDto: CreateUserDto) {
+        // return this.authService.register(createUserDto);
     }
 
     /**
@@ -27,7 +27,7 @@ export class AuthController {
      */
     @Post('login')
     async login(@Body() loginDto: LoginDto) {
-        return this.authService.login(loginDto);
+        // return this.authService.login(loginDto);
     }
 
     /**
@@ -35,6 +35,6 @@ export class AuthController {
      */
     @Post('refresh-token')
     async refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
-        return this.authService.refreshToken(refreshTokenDto);
+        // return this.authService.refreshToken(refreshTokenDto);
     }
 }
