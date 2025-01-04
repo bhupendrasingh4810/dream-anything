@@ -6,7 +6,7 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
  */
 export class LoginDto {
     @IsEmail()
-    email: string; // User's email address
+    username: string; // User's email address or username
 
     @IsNotEmpty()
     password: string; // User's password

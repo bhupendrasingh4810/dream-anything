@@ -18,7 +18,7 @@ import { MailService } from '../mail.service';
 @Injectable()
 export class AuthService {
     // constructor(
-    //     @InjectRepository(User) private userRepository: Repository<User>, // Inject the user repository
+    @InjectRepository(User) private userRepository: Repository<User> // Inject the user repository
     //     private readonly configService: ConfigService,
     //     private readonly mailService: MailService
     // ) { }
@@ -54,23 +54,23 @@ export class AuthService {
     /**
      * Logs in a user by validating their credentials.
      */
-    // async login(loginDto: LoginDto) {
-    //     const { email, password } = loginDto;
-    //     const user = await this.userRepository.findOne({ where: { email } });
-    //     if (!user) {
-    //         throw new Error('User not found');
-    //     }
+    async login(loginDto: LoginDto) {
+        const { username, password } = loginDto;
+        const user = await this.userRepository.findOne({ where: [{ email: username }, { username }] });
+        if (!user) {
+            throw new Error('User not found');
+        }
 
-    //     const isPasswordValid = await bcrypt.compare(password, user.password); // Compare the provided password with the stored hash
-    //     if (!isPasswordValid) {
-    //         throw new Error('Invalid password');
-    //     }
+        const isPasswordValid = await bcrypt.compare(password, user.password); // Compare the provided password with the stored hash
+        if (!isPasswordValid) {
+            throw new Error('Invalid password');
+        }
 
-    //     const accessToken = this.generateAccessToken(user); // Generate access token
-    //     const refreshToken = this.generateRefreshToken(user); // Generate refresh token
+        const accessToken = this.generateAccessToken(user); // Generate access token
+        const refreshToken = this.generateRefreshToken(user); // Generate refresh token
 
-    //     return { accessToken, refreshToken };
-    // }
+        return { accessToken, refreshToken };
+    }
 
     /**
      * Refreshes the access token using the refresh token.
@@ -161,17 +161,17 @@ export class AuthService {
     //     }
     // }
 
-    // /**
-    //  * Generates a JWT access token for the user.
-    //  */
-    // private generateAccessToken(user: User) {
-    //     return jwt.sign({ sub: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    // }
+    /**
+     * Generates a JWT access token for the user.
+     */
+    private generateAccessToken(user: User) {
+        return jwt.sign({ sub: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    }
 
-    // /**
-    //  * Generates a JWT refresh token for the user.
-    //  */
-    // private generateRefreshToken(user: User) {
-    //     return jwt.sign({ sub: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
-    // }
+    /**
+     * Generates a JWT refresh token for the user.
+     */
+    private generateRefreshToken(user: User) {
+        return jwt.sign({ sub: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+    }
 }
