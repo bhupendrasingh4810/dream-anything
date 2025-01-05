@@ -1,7 +1,8 @@
 import { DataSource } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
+import { faker } from '@faker-js/faker';
 import { User } from '../../../modules/users/entities/user.entity';
 import { Gender, KycStatus, UserStatus } from '../../../modules/users/entities/user.entity';
-import { faker } from '@faker-js/faker';
 
 export class UsersSeeder {
   static async seed(dataSource: DataSource): Promise<void> {
@@ -11,13 +12,13 @@ export class UsersSeeder {
     const users: User[] = [];
     const availableLocales = ['en', 'es', 'fr', 'de', 'it', 'ja', 'zh_CN'];
 
-    for (let i = 0; i < 500; i++) {
+    for (let i = 0; i < 50; i++) {
       const user = new User();
       user.name = faker.person.fullName();
       user.username = faker.internet.username();
       user.email = faker.internet.email();
       user.phone = faker.phone.number();
-      user.password = 'Dream1234'; // Use hashed passwords in production
+      user.password = await bcrypt.hash('Dream1234', 10); // Use hashed passwords in production
       user.profile_picture_url = faker.image.avatar();
       user.dob = faker.date.birthdate({ min: 18, max: 65, mode: 'age' });
       user.address = {

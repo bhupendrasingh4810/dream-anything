@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
@@ -56,20 +56,28 @@ export class AuthService {
      */
     async login(loginDto: LoginDto) {
         const { username, password } = loginDto;
-        const user = await this.userRepository.findOne({ where: [{ email: username }, { username }] });
+
+        // Try to find the user by email or username
+        const user: User = await this.userRepository.findOne({ where: [{ email: username }, { username }] });
+
+        // If user doesn't exist, throw a 404 Not Found error
         if (!user) {
-            throw new Error('User not found');
+            throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password); // Compare the provided password with the stored hash
+        // Compare password with the stored hash
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        // If the password is invalid, throw a 401 Unauthorized error
         if (!isPasswordValid) {
-            throw new Error('Invalid password');
+            throw new HttpException('Invalid password', HttpStatus.UNAUTHORIZED);
         }
+        delete user.password;
+        // Generate tokens
+        const accessToken = this.generateAccessToken(user);
+        const refreshToken = this.generateRefreshToken(user);
 
-        const accessToken = this.generateAccessToken(user); // Generate access token
-        const refreshToken = this.generateRefreshToken(user); // Generate refresh token
-
-        return { accessToken, refreshToken };
+        return { accessToken, refreshToken, user };
     }
 
     /**
@@ -165,13 +173,15 @@ export class AuthService {
      * Generates a JWT access token for the user.
      */
     private generateAccessToken(user: User) {
-        return jwt.sign({ sub: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        return jwt.sign({ sub: user.id, email: user.email }, '63156f09-6ef8-4e06-b15a-b44468b8a3cf', { expiresIn: '1h' });
+        // return jwt.sign({ sub: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
     }
 
     /**
      * Generates a JWT refresh token for the user.
      */
     private generateRefreshToken(user: User) {
-        return jwt.sign({ sub: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+        return jwt.sign({ sub: user.id }, '5bdcc192-2a46-40b5-8727-f09d3b68652f', { expiresIn: '7d' });
+        // return jwt.sign({ sub: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
     }
 }
